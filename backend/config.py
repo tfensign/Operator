@@ -2,7 +2,13 @@ import os
 from pathlib import Path
 
 BASE_DIR = Path(__file__).parent.parent
-DATA_DIR = BASE_DIR / "data"
+
+# On Railway, use /tmp since filesystem is ephemeral
+# Locally, use ./data
+if os.getenv("RAILWAY_ENVIRONMENT_ID"):
+    DATA_DIR = Path("/tmp/operator_data")
+else:
+    DATA_DIR = BASE_DIR / "data"
 
 try:
     DATA_DIR.mkdir(parents=True, exist_ok=True)
