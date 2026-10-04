@@ -7,6 +7,9 @@ function Setup({ onSetup }: { onSetup: () => void }) {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
+  const passwordsMatch = password && confirmPassword && password === confirmPassword;
+  const passwordsVisible = password || confirmPassword;
+
   const handleSetup = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
@@ -26,7 +29,9 @@ function Setup({ onSetup }: { onSetup: () => void }) {
       await api.setupMasterPassword(password);
       onSetup();
     } catch (err: any) {
-      setError(err.response?.data?.detail || 'Setup failed');
+      const errorMsg = err.response?.data?.detail || err.message || 'Setup failed';
+      console.error('Setup error:', err);
+      setError(errorMsg);
     } finally {
       setLoading(false);
     }
@@ -60,6 +65,11 @@ function Setup({ onSetup }: { onSetup: () => void }) {
               onChange={(e) => setConfirmPassword(e.target.value)}
               disabled={loading}
             />
+            {passwordsVisible && (
+              <p className={passwordsMatch ? 'success' : 'error'}>
+                {passwordsMatch ? '✓ Passwords match' : '✗ Passwords do not match'}
+              </p>
+            )}
           </div>
 
           {error && <p className="error">{error}</p>}
