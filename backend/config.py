@@ -6,7 +6,7 @@ DATABASE_URL = f"sqlite:///{BASE_DIR}/data/operator.db"
 DATA_DIR = BASE_DIR / "data"
 DATA_DIR.mkdir(exist_ok=True)
 
-BACKEND_PORT = int(os.getenv("BACKEND_PORT", 3001))
+BACKEND_PORT = int(os.getenv("PORT") or os.getenv("BACKEND_PORT", 8000))
 BACKEND_HOST = os.getenv("BACKEND_HOST", "0.0.0.0")
 
 # Security
