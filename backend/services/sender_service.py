@@ -4,7 +4,7 @@ from email.mime.multipart import MIMEMultipart
 from sqlalchemy.orm import Session
 from database import SentMessage, PendingSend, Credential
 from crypto import CryptoService
-from datetime import datetime
+from datetime import datetime, timezone
 
 class SenderService:
     @staticmethod
@@ -143,7 +143,7 @@ class SenderService:
                     to_address=pending.to_address,
                     subject=pending.subject,
                     body=pending.body,
-                    approved_at=datetime.utcnow()
+                    approved_at=datetime.now(timezone.utc)
                 )
                 db.add(sent_msg)
 

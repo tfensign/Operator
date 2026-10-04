@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, Column, Integer, String, DateTime, Float, Text, Boolean, ForeignKey
+from sqlalchemy import create_engine, Column, Integer, String, DateTime, Float, Text, Boolean, ForeignKey, func
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from datetime import datetime
@@ -12,7 +12,7 @@ class User(Base):
     __tablename__ = "users"
     id = Column(Integer, primary_key=True)
     master_password_hash = Column(String, nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=func.now)
 
 class Message(Base):
     __tablename__ = "messages"
@@ -22,7 +22,7 @@ class Message(Base):
     subject = Column(String)
     body = Column(Text, nullable=False)
     priority = Column(Float, default=0)  # 0-5
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=func.now)
     read_at = Column(DateTime, nullable=True)
     deleted_at = Column(DateTime, nullable=True)
 
@@ -31,7 +31,7 @@ class Checklist(Base):
     id = Column(Integer, primary_key=True)
     title = Column(String, nullable=False)
     description = Column(Text)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=func.now)
     due_date = Column(DateTime, nullable=True)
     completed_at = Column(DateTime, nullable=True)
 
@@ -49,7 +49,7 @@ class Credential(Base):
     platform = Column(String, nullable=False)  # email, slack, sms, etc.
     credential_type = Column(String, nullable=False)  # api_key, oauth_token, password
     encrypted_value = Column(String, nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=func.now)
 
 class Integration(Base):
     __tablename__ = "integrations"
@@ -57,7 +57,7 @@ class Integration(Base):
     platform = Column(String, unique=True, nullable=False)
     webhook_url = Column(String)
     status = Column(String, default="inactive")  # active, inactive
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=func.now)
 
 class PendingSend(Base):
     __tablename__ = "pending_sends"
@@ -66,7 +66,7 @@ class PendingSend(Base):
     to_address = Column(String, nullable=False)
     subject = Column(String)
     body = Column(Text, nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=func.now)
     approved_at = Column(DateTime, nullable=True)
 
 class SentMessage(Base):
@@ -76,7 +76,7 @@ class SentMessage(Base):
     to_address = Column(String, nullable=False)
     subject = Column(String)
     body = Column(Text, nullable=False)
-    sent_at = Column(DateTime, default=datetime.utcnow)
+    sent_at = Column(DateTime, default=func.now)
     approved_at = Column(DateTime, nullable=True)
 
 def init_db():

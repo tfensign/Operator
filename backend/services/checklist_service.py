@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
 from database import Checklist, ChecklistItem, Message
 from services.message_service import MessageService
+from datetime import datetime, timezone
 
 class ChecklistService:
     @staticmethod
@@ -69,10 +70,9 @@ class ChecklistService:
         db: Session,
         item_id: int
     ) -> ChecklistItem:
-        from datetime import datetime
         item = db.query(ChecklistItem).filter(ChecklistItem.id == item_id).first()
         if item:
-            item.completed_at = datetime.utcnow()
+            item.completed_at = datetime.now(timezone.utc)
             db.commit()
             db.refresh(item)
         return item
