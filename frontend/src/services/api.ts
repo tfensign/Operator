@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Message, Checklist, PendingSend, Integration } from '../types';
 
-const API_URL = 'http://localhost:3001';
+const API_URL = process.env.REACT_APP_API_URL || 'https://operator-production-2523.up.railway.app';
 
 const client = axios.create({
   baseURL: API_URL,
