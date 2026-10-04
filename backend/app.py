@@ -10,11 +10,18 @@ app = FastAPI(
     version="0.1.0"
 )
 
+print(f"Starting Operator backend on {config.BACKEND_HOST}:{config.BACKEND_PORT}")
+print(f"Database: {config.DATABASE_URL}")
+
 # Initialize database
 try:
+    print("Initializing database...")
     init_db()
+    print("Database initialized successfully")
 except Exception as e:
-    print(f"Database initialization error: {e}")
+    print(f"ERROR: Database initialization failed: {e}")
+    import traceback
+    traceback.print_exc()
 
 # CORS middleware
 allowed_origins = [

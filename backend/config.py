@@ -2,9 +2,15 @@ import os
 from pathlib import Path
 
 BASE_DIR = Path(__file__).parent.parent
-DATABASE_URL = f"sqlite:///{BASE_DIR}/data/operator.db"
 DATA_DIR = BASE_DIR / "data"
-DATA_DIR.mkdir(exist_ok=True)
+
+try:
+    DATA_DIR.mkdir(parents=True, exist_ok=True)
+except Exception as e:
+    print(f"Warning: Could not create data directory: {e}")
+    print(f"DATA_DIR: {DATA_DIR}")
+
+DATABASE_URL = f"sqlite:///{DATA_DIR}/operator.db"
 
 BACKEND_PORT = int(os.getenv("PORT") or os.getenv("BACKEND_PORT", 8000))
 BACKEND_HOST = os.getenv("BACKEND_HOST", "0.0.0.0")
